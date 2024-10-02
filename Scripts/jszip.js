@@ -1,23 +1,4 @@
 /**
-
-JSZip - A Javascript class for generating Zip files
-<http://stuartk.com/jszip>
-
-(c) 2009 Stuart Knightley <stuart [at] stuartk.com>
-Licenced under the GPLv3 and the MIT licences
-
-Usage:
-   zip = new JSZip();
-   zip.file("hello.txt", "Hello, World!").add("tempfile", "nothing");
-   zip.folder("images").file("smile.gif", base64Data, {base64: true});
-   zip.file("Xmas.txt", "Ho ho ho !", {date : new Date("December 25, 2007 00:00:01")});
-   zip.remove("tempfile");
-
-   base64zip = zip.generate();
-
-**/
-
-/**
  * Representation a of zip file in js
  * @constructor
  * @param {String=} data the data to load, if any (optional).

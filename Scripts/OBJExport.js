@@ -1,13 +1,3 @@
-/*
-Copyright 2012 Rob Chadwick (rchadwic@gmail.com)
-This work is licensed under a Creative Commons 
-Attribution-NonCommercial-ShareAlike 3.0 Unported License.
-http://creativecommons.org/licenses/by-nc-sa/3.0/
-*/
-
-
-
-
 var TerrainBufferArray = new ArrayBuffer(4*512*512);
 var TerrainBufferView = new Uint8Array(TerrainBufferArray,0);
 function GetData(){
