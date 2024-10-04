@@ -1,23 +1,3 @@
-/** -*- compile-command: "jslint-cli osgViewer.js" -*-
- *
- *  Copyright (C) 2010 Cedric Pinson
- *
- *                  GNU LESSER GENERAL PUBLIC LICENSE
- *                      Version 3, 29 June 2007
- *
- * Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
- * Everyone is permitted to copy and distribute verbatim copies
- * of this license document, but changing it is not allowed.
- *
- * This version of the GNU Lesser General Public License incorporates
- * the terms and conditions of version 3 of the GNU General Public
- * License
- *
- * Authors:
- *  Cedric Pinson <cedric.pinson@plopbyte.net>
- *
- */
-
 var osgViewer = {};
 
 osgViewer.Viewer = function(canvas,ingl) {
@@ -29,7 +9,6 @@ osgViewer.Viewer = function(canvas,ingl) {
              osgUtil.UpdateVisitor = osg.UpdateVisitor;
              osgUtil.CullVisitor = osg.CullVisitor;
              this.urlOptions = true;
-            
 	}
     else
 	{
@@ -296,7 +275,6 @@ osgViewer.Viewer.prototype = {
         this.cullVisitor.setStateGraph(this.OpaqueStateGraph);
         this.cullVisitor.setRenderStage(this.OpaqueRenderStage);
 
-        //this.OpaqueRenderStage.setViewport(this.view.getClearDepth());
         this.OpaqueRenderStage.setClearDepth(this.view.getClearDepth());
         this.OpaqueRenderStage.setClearColor(this.view.getClearColor());
         this.OpaqueRenderStage.setClearMask(this.view.getClearMask());
@@ -344,8 +322,6 @@ osgViewer.Viewer.prototype = {
         var x = (WebGL.MouseX / WebGL.gviewer.canvas.width);
 	    var y = (WebGL.MouseY / WebGL.gviewer.canvas.height);
 	    
-	 
-	
 
         var cullTime = (new Date()).getTime();
         updateTime = cullTime - updateTime;
@@ -394,11 +370,7 @@ osgViewer.Viewer.prototype = {
         var that = this;
         var render = function() {
             window.requestAnimationFrame(render, this.canvas);
-            
-         
-        	that.frame();
-    	
-            
+        	that.frame(); 
         };
         render();
     },

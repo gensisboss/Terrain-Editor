@@ -422,17 +422,14 @@ $(document).ready(function(){
 	$("#BrushDraw").button({label:"Pull"});
     $("#BrushDraw").click(function(){drawtarget="Height";brushmode=0.0;});
     $("#BrushDraw").html('Pull');
-	$("#BrushDown").button({label:"Down"});
-    $("#BrushDown").click(function(){drawtarget="Height";brushmode=1.0;});
-    $("#BrushDown").html('Down');
     $("#BrushBlur").button({label:"Smooth"});
-    $("#BrushBlur").click(function(){drawtarget="Height";brushmode=2.0;});
+    $("#BrushBlur").click(function(){drawtarget="Height";brushmode=1.0;});
     $("#BrushBlur").html('Smooth');
     $("#BrushSet").button({label:"Set"});
-    $("#BrushSet").click(function(){drawtarget="Height";brushmode=3.0;});
+    $("#BrushSet").click(function(){drawtarget="Height";brushmode=2.0;});
     $("#BrushSet").html('Set');
     $("#BrushNoise").button({label:"Noise"});
-    $("#BrushNoise").click(function(){drawtarget="Height";brushmode=4.0;});
+    $("#BrushNoise").click(function(){drawtarget="Height";brushmode=3.0;});
     $("#BrushNoise").html('Noise');
 
 	$("#BrushCircle").button({label:"Circle"});
@@ -845,7 +842,6 @@ $(document).ready(function(){
 				Falloff<div id="BrushFalloff" ></div>
 				</br>Paint Height:</br>
 				<div id="BrushDraw" style="width:50px"></div>
-				<div id="BrushDown" style="width:50px"></div>
 				<div id="BrushBlur" style="width:50px"></div>
 				<div id="BrushSet" style="width:50px"></div>	
 				<div id="BrushNoise" style="width:50px"></div>		

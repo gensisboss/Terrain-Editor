@@ -553,20 +553,11 @@ function GetLandscapeTextureShader() {
 	    "gl_FragColor *= ao;",
 	    "gl_FragColor += diffusetexture * gi;",
             "float fogshadow = 0.0;" +
-          //  "if(RenderOptions2[1] == 1.0) fogshadow = 1.0;",
-          //  "if(RenderOptions2[1] == 2.0) fogshadow = 1.0 - unpackFloatFromVec4i(texture2D(godraysmap,(vec2((sspos.x/sspos.w)  ,(sspos.y/sspos.w) )) /2.0 +.5));",
-	    //"gl_FragColor = vec4(fogamount,fogamount,fogamount,1.0); return;",
-          //  "float totalfog = fogshadow * fogshadow * clamp((100.0-(camerapos - wViewRay).y)/100.0 * pow(.0035*length(wViewRay),2.0),0.0,1.0);",
-          //  "totalfog = clamp(totalfog,0.0,1.0);",
-	  //  "gl_FragColor =  mix(gl_FragColor,GetSHDirect(normalize(-wViewRay)),totalfog );",
-	//    "gl_FragColor =  vec4(totalfog,totalfog,totalfog,1.0 );",
 	    "gl_FragColor.a = 1.0;",
 	    "float len = length(oTC0-PaintPos)/(PaintPosition.z/(512.0*4.0));",
 	    "len = clamp(len,0.0,1.0);",
 	    "len = pow(1.0-len,PaintOptions[0]);",
 	    "len = clamp(len,0.0,1.0);",
-	   
-	    //"gl_FragColor = mix(gl_FragColor,vec4(1.0-((PaintPosition[3]+.002)*250.0),0.0,(PaintPosition[3]+.002)*250.0,1.0),len); ",
 	     "}" ].join('\n');
 
     var Frag = osg.Shader.create(gl.FRAGMENT_SHADER, fragshader);

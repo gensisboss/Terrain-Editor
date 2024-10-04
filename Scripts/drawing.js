@@ -123,25 +123,7 @@ function GetDrawingShader() {
         	    "ret = clamp(ret,0.0,1.0);",
         	    "gl_FragColor = packFloatToVec4i(ret);",
 	    "}",
-		"if(PaintOptions[1]==1.0)",
-	    "{",
-	         	"float base = unpackFloatFromVec4i(texture2D(texture,oTC0));",
-        	    "float ret = 0.0;",
-        	    "ret = base;",
-        	    
-        	    "float len = length(oTC0-PaintPos.xy)/(PaintPosition.z/(512.0*4.0));",
-        	    "if( len< 1.0)" ,
-        	    "{" ,
-        	    	"ret -=  stregnth* pow(1.0-(len),PaintOptions[0]);" ,
-        	    "} ",
-        	    "if(len > 1.0)" ,
-        	    "{" ,
-        	    	"return;" ,
-        	    "} ",
-        	    "ret = clamp(ret,0.0,1.0);",
-        	    "gl_FragColor = packFloatToVec4i(ret);",
-	    "}",
-	    "if(PaintOptions[1]==2.0)",
+	    "if(PaintOptions[1]==1.0)",
 	    "{",
 	        "float base0 = unpackFloatFromVec4i(texture2D(texture,oTC0+vec2(0.0,0.0)));",
 	    	
@@ -164,7 +146,7 @@ function GetDrawingShader() {
         	"discard;",
         	"} ",
 	    "}",
-	    "if(PaintOptions[1]==3.0)",
+	    "if(PaintOptions[1]==2.0)",
 	    "{",
 	        "float base0 = unpackFloatFromVec4i(texture2D(texture,oTC0+vec2(0.0,0.0)));",
 	        "float len = length(oTC0-PaintPos.xy)/(PaintPosition.z/(512.0*4.0));",
@@ -180,7 +162,7 @@ function GetDrawingShader() {
         		"return;",
         	"} ",
 	     "}",
-	     "if(PaintOptions[1]==4.0)",
+	     "if(PaintOptions[1]==3.0)",
 		    "{",
 		        "float base0 = unpackFloatFromVec4i(texture2D(texture,oTC0+vec2(0.0,0.0)));",
 		        "float len = length(oTC0-PaintPos.xy)/(PaintPosition.z/(512.0*4.0));",
@@ -201,7 +183,6 @@ function GetDrawingShader() {
 
     var Frag = osg.Shader.create(gl.FRAGMENT_SHADER, fragshader);
     var Vert = osg.Shader.create(gl.VERTEX_SHADER, vertshader);
-
     var Prog = osg.Program.create(Vert, Frag);
     return Prog;
 
@@ -216,22 +197,16 @@ function GetTextureDrawingShader() {
 	    "precision highp float;",
 	    "#endif",
 	    "attribute vec3 Vertex;",
-	   
 	    "attribute vec2 TexCoord0;",
-	   
-	    
-	    "varying vec2 oTC0;",
-	    
+	    "varying vec2 oTC0;",    
 	    
 	    "vec4 ftransform() {",
-	    "return vec4(Vertex, 1.0);",
+	    	"return vec4(Vertex, 1.0);",
 	    "}",
 	    "",
 	    "void main() {",
-	    "gl_Position = ftransform();",
-	   
-	    "oTC0 = TexCoord0;",
-	   
+	    	"gl_Position = ftransform();",
+	    	"oTC0 = TexCoord0;",
 	    "}" ].join('\n');
 
     var fragshader = [

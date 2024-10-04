@@ -1,23 +1,3 @@
-/** -*- compile-command: "jslint-cli osgGA.js" -*-
- *
- *  Copyright (C) 2010 Cedric Pinson
- *
- *                  GNU LESSER GENERAL PUBLIC LICENSE
- *                      Version 3, 29 June 2007
- *
- * Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
- * Everyone is permitted to copy and distribute verbatim copies
- * of this license document, but changing it is not allowed.
- *
- * This version of the GNU Lesser General Public License incorporates
- * the terms and conditions of version 3 of the GNU General Public
- * License
- *
- * Authors:
- *  Cedric Pinson <cedric.pinson@plopbyte.net>
- *
- */
-
 osgGA = {};
 osgGA.OrbitManipulatorMode = {
     Rotate: 0,
@@ -159,15 +139,6 @@ osgGA.OrbitManipulator.prototype = {
             this.rotation = r;
             return;
         }
-
-        // if (Math.abs(p) > 0.9) {
-        //     var plane = [ dir[0] , dir[1], 0 ];
-        //     osg.Vec3.normalize(plane, plane);
-
-        //     var diff = Math.abs(p) - 0.9;
-        //     r2  = osg.Matrix.mult(r2, osg.Matrix.makeRotate( diff , plane[0], plane[1], 0));
-        //     osg.log("adjust rotation" + diff + " axis " + plane);
-        // }
 
         this.rotation = r2;
     },

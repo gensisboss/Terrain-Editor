@@ -79,7 +79,6 @@ function GetTextureName(ss)
 {
     if (ss) 
     {
-	
 	 var texturekeys = false;
     	    if(ss.textureAttributeMapList)
     		texturekeys = ss.textureAttributeMapList.length > 0 ? true : false;
@@ -154,7 +153,6 @@ function ZoomExtentsSelected() {
 
  function SelectNode(node)
  {
-     
      if(node.pickedUniform)
 	 {
 	 	node.pickedUniform.set([1]);	 
@@ -1396,7 +1394,6 @@ function GetViewAlignedQuadShader() {
     return Prog;
 
 }
-
 function GetSelectionOverlayShader() {
 
     var vertshader = [
@@ -1533,8 +1530,6 @@ function GetDepthShader() {
     return Prog;
 
 }
-
-
 function GetPickShader() {
 
     var vertshader = [
@@ -1718,10 +1713,6 @@ function GetRecieveShadows() {
 	    "float b = mix(x3,x4,fractional.x);",
 	    "return mix(a,b,fractional.y);",
 
-
-
-
-//COMMENT OUT ABOVE RETURNS FOR HIGHER QUALITY SHADOWS
         "float res = 0.0;",
         
         "vec4 bounds = vec4(-2.0,1.0,-2.0,1.0);",
@@ -1790,8 +1781,6 @@ function GetRecieveShadows() {
 
 function BuildSelectionOverlayQuad()
 {
-    
- 
     var quad =  osg.createTexuredQuad(-1,-1,0,
             2, 0 ,0,
             0, 2,0);
@@ -1861,8 +1850,6 @@ function BuildShadowCamera() {
 var buff = new ArrayBuffer(4);
 var v1 = new Uint8Array(buff,0);
 function DoPick(){
-    
-    
    // WebGL.gviewer.view.addChild(WebGL.PickBufferCam);
    // WebGL.gviewer.frame();
     gl.bindFramebuffer(gl.FRAMEBUFFER,WebGL.PickBufferCam.frameBufferObject.fbo);
@@ -2078,9 +2065,6 @@ function SampleHeightmap(input)
  
 function SetupRendering() {
 
-   
-    
-    
     WebGL.gviewer.canvas.width = WebGL.gviewer.canvas.clientWidth;
     WebGL.gviewer.canvas.height = WebGL.gviewer.canvas.clientHeight;
     
@@ -2113,8 +2097,6 @@ function SetupRendering() {
     WebGL.gModelRoot.accept(new AssignRandomPickColorsVisitor());
     
     WebGlSetUnitScale(WebGL.tempScale);
-   // WebGL.BoundGeom = CreateBoundsGeometry(WebGL.gSceneBounds.points);
-   // WebGL.gCamera.addChild(WebGL.BoundGeom);
     var radius = 5;//WebGL.gSceneBounds.GetRadius();
 
     WebGL.gCameraOffset = [ radius, radius, radius ];
@@ -2122,9 +2104,6 @@ function SetupRendering() {
     WebGL.gCameraCenterGoal = WebGL.gSceneBounds.GetCenter();
     UpdateCamera();
 
-    //WebGL.gGridNode = BuildGridGeometry();
-
-  //  WebGL.gCamera.addChild(WebGL.gGridNode);
     WebGL.gCamera.getOrCreateStateSet().setAttribute(
 	    new osg.BlendFunc("SRC_ALPHA", "ONE_MINUS_SRC_ALPHA" ));
     WebGL.gCamera.getOrCreateStateSet().setAttribute(
@@ -2134,21 +2113,13 @@ function SetupRendering() {
 
     WebGL.ShadowCam = CameraTexturePair.camera;
     WebGL.ShadowTexture = CameraTexturePair.texture;
-    // WebGL.gCamera.addChild(CameraTexturePair.camera);
     CameraTexturePair.camera.addChild(WebGL.gModelRoot);
     CameraTexturePair.camera.setViewMatrix(osg.Matrix.makeLookAt(WebGL.gCameraOffset,
 	    WebGL.gCameraTarget, WebGL.gUpVector));
 
-
-    // var rq = osg.createTexuredQuad(10 / 2.0, .001, -10 / 2.0,
-    // -10, 0, 0, 0, 0, 10, WebGL.gSceneBounds.GetRadius(),
-    // WebGL.gSceneBounds.GetRadius(), 0, 0);
-    // rq.getOrCreateStateSet().setTextureAttribute(0,CameraTexturePair.texture);
-
     WebGL.gCamera.getOrCreateStateSet().addUniform(osg.Uniform.createInt1(2,"heightmap"));
     WebGL.gCamera.getOrCreateStateSet().setAttribute(GetLandscapeShader());
     
-    //WebGL.gCamera.getOrCreateStateSet().setAttribute(GetRecieveShadows());
     WebGL.gCamera.getOrCreateStateSet().setTextureAttribute(3,
 	    CameraTexturePair.texture);
     WebGL.gCamera.getOrCreateStateSet().addUniform(
@@ -2171,8 +2142,6 @@ function SetupRendering() {
     WebGL.gCamera.getOrCreateStateSet().addUniform(WebGL.ShadowMatrixUniform);
     WebGL.gCamera.getOrCreateStateSet().addUniform(WebGL.ViewMatrixUniform);
     WebGL.gCamera.getOrCreateStateSet().addUniform(WebGL.FrameTimeUniform);
-    // WebGL.gCamera.addChild(rq);
-
     
     WebGL.gviewer.setScene(WebGL.gCamera);
 
@@ -2183,8 +2152,6 @@ function SetupRendering() {
     WebGL.gCamera.setProjectionMatrix(osg.Matrix.makePerspective(60, ratio, WebGL.gSceneBounds.GetRadius()/10,
 	    WebGL.gSceneBounds.GetRadius()*10));
 
-    // WebGL.gCamera.setProjectionMatrix(osg.Matrix.makeOrtho(-10, 10, -10, 10, -0,
-    // 10000.0));
     WebGL.gviewer.view.setClearColor([ 1, 1, 1, 1 ]);
 
     WebGL.gviewer.scene.setUpdateCallback(new AnimationCallback);
@@ -2211,10 +2178,8 @@ function SetupRendering() {
 	    var y = (WebGL.MouseY / WebGL.gviewer.canvas.height);
 	    
 	    WebGL.FrameTimeUniform.set([time]);
-	    if(WebGL.gPaintPositionUniform)
-		WebGL.gPaintPositionUniform.set([x,y,brushsize,brushstrength]);
-	    if(WebGL.gPaintOptionsUniform)
-		 WebGL.gPaintOptionsUniform.set([brushfalloff,brushmode,0,0]);
+	    if(WebGL.gPaintPositionUniform) WebGL.gPaintPositionUniform.set([x,y,brushsize,brushstrength]);
+	    if(WebGL.gPaintOptionsUniform) WebGL.gPaintOptionsUniform.set([brushfalloff,brushmode,0,0]);
 	
 	    WebGL.gTimeUniform.set([parseInt(WebGL.gTimeUniform.data[0]) + 1]);
     }
@@ -2230,7 +2195,6 @@ function SetupRendering() {
     
     var CountPolys = new CountTrianglesVisitor();
     WebGL.gSceneRoot.accept(CountPolys);
-   
     
     WebGL.InWireframeUniform = osg.Uniform.createInt1(0, "InWireframe");
     WebGL.gModelRoot.getOrCreateStateSet().addUniform(WebGL.InWireframeUniform);
