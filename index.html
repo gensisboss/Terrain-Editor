@@ -229,59 +229,7 @@ function AtmosphereShadowsAreOn()
     return WebGL.gRenderOptionsUniform2.data[1] > 1;   
 }
 $(document).ready(function(){
-    Downloadify.create(document.getElementById('ExportOBJ'),{
-	    filename: function(){
-	      return 'Terrain.zip';
-	    },
-	    data: function(){ 
-			var zip = new JSZip();
-			var gl = WebGL.gviewer.gl;
-			     
-			WebGL.gviewer.canvas.height = 1024;
-			WebGL.gviewer.canvas.width = 1024;
-			WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.BakeTexture);
-			WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
-			WebGL.gCamera.setViewport(new osg.Viewport(0, 0, 1024, 1024));
-			WebGL.gviewer.frame();
-			WebGL.gviewer.gl.flush();
-
-			var texture = WebGL.gviewer.canvas.toDataURL();
-
-			WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
-			WebGL.gviewer.canvas.height = $(window).height();
-			WebGL.gviewer.canvas.width = $(window).width();
-			WebGL.gCamera.setViewport(new osg.Viewport(0, 0, $(window).width(), $(window).height()));
-			
-			texture = texture.substr(22);
-			
-			zip.file("Terrain.obj", exportOBJ());
-			zip.file("Terrain.mtl", exportMTL());
-			zip.file("Texture.png", texture, {base64:true});
-			var content = zip.generate({base64:true,compression:"STORE"});
-			$("#loading").dialog("close");
-	    	return content;
-	    
-	    },
-	    onComplete: function(){ 
-	  
-				 
-	    },
-	    onCancel: function(){ 
-	      alert('You have cancelled the saving of this file.');
-	    },
-	    onError: function(){ 
-	      alert('Error'); 
-	    },
-	    transparent: false,
-	    swf: './downloadify.swf',
-	    downloadImage: 'images/download.png',
-	    width: 100,
-	    height: 30,
-	    transparent: true,
-	    append: false,
-	    dataType: 'base64'
-	  });
-   
+	
     $("#Textured").button({label:"Textured"});
     $("#Textured").click(function(){
 		if($("#Textured").html()=="Textured")
