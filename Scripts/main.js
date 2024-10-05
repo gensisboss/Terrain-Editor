@@ -1,17 +1,15 @@
-
-
- var isNS = (navigator.appName == "Netscape") ? 1 : 0;
-  function mischandler(){
-   return false;
- }
-  function mousehandler(e){
- 	var myevent = (isNS) ? e : event;
- 	var eventbutton = (isNS) ? myevent.which : myevent.button;
-    if((eventbutton==2)||(eventbutton==3)) return false;
- }
- document.oncontextmenu = mischandler;
- document.onmousedown = mousehandler;
- document.onmouseup = mousehandler;
+var isNS = (navigator.appName == "Netscape") ? 1 : 0;
+function mischandler(){
+	return false;	
+}
+function mousehandler(e){
+	var myevent = (isNS) ? e : event;
+	var eventbutton = (isNS) ? myevent.which : myevent.button;
+	if((eventbutton==2)||(eventbutton==3)) return false;
+}
+document.oncontextmenu = mischandler;
+document.onmousedown = mousehandler;
+document.onmouseup = mousehandler;
 
 
 var WebGL = {};
@@ -21,230 +19,58 @@ WebGL.gPaintPositionUniform = null;
 WebGL.gPaintOptionsUniform = null;
 WebGL.gRenderOptionsUniform = null;
 WebGL.gRenderOptionsUniform2 = null;
- WebGL.needsRefresh = true;
- WebGL.gURL = "";
- WebGL.gviewer;
- WebGL.gSceneRoot;
- WebGL.gWireframeButton;
- WebGL.gUpButton;
- WebGL.gRadius = 1;
- WebGL.gCameraOffset = [ WebGL.gRadius, 0, 0 ];
- WebGL.gCameraTarget = [ 0, 0, 0 ];
- WebGL.gUpVector = [ 0, 1, 0 ];
- WebGL.gCameraGoal = WebGL.gCameraOffset;
- WebGL.gAnimating = false;
- WebGL.gOldX = 0;
- WebGL.gOldY = 0;
- WebGL.gMouseDown = false;
- WebGL.gGridNode;
- WebGL.gModelRoot;
- WebGL.gSceneBounds;
- WebGL.gOriginalSceneBounds;
- WebGL.gCamera;
- WebGL.ShadowCam;
- WebGL.ViewMatrixUniform;
- WebGL.ShadowMatrixUniform;
- WebGL.gAnimatingRotation = false;
- WebGL.gCanvasSizeUniform;
- WebGL.gPID = "";
- WebGL.gUnitScale = 1.0;
- WebGL.tempUpVec;
- WebGL.tempScale;
- WebGL.ShadowMapResolution = '1024.0';
- WebGL.ShadowDebugNode;
- WebGL.inFullScreen = false;
- WebGL.InUpload = false;
- WebGL.InWireframeUniform = null;
- WebGL.gButtonsInitialized = false;
- WebGL.PickBufferCam;
- WebGL.PickBufferTexture;
- WebGL.ManipulateMode = 'select';
- WebGL.PickBufferResolution = 512;
- WebGL.ThumbNails = [];
- WebGL.gCameraCenterGoal = [0, 0, 0];
- WebGL.LoadingComplete = false;
- WebGL.gUseTempTextureHandler = false;
- WebGL.MouseX = 0;
- WebGL.MouseY = 0;
- 
- wisdown = false;
- aisdown = false;
- sisdown = false;
- disdown = false;
- 
-function GetTextureName(ss)
-{
-    if (ss) 
-    {
-	 var texturekeys = false;
-    	    if(ss.textureAttributeMapList)
-    		texturekeys = ss.textureAttributeMapList.length > 0 ? true : false;
-    	    if(texturekeys)
-    	    {
-    		var texmap = ss.textureAttributeMapList[0];
-		    	if(texmap)
-		    	    {
-	    		    	var texkeys = texmap.attributeKeys;
-	    		    	for(var j = 0; j < texkeys.length; j++)
-	    		    	{
-	    		    	    var texatt = texmap[texkeys[j]];	
-	    		    	    if(texatt.attributeType == 'Texture')
-	    		    		{
-	    		    			var img = texatt.image;
-	    		    			return img.src;
-	    		    		}
-	    		    	}
-		    	    }
-    	    }
-    }
-    return "";
-}
-function DeSelectNode(node)
-{
-    
-    if(node.pickedUniform)
-	 {
-	 	node.pickedUniform.set([0]);	 
-	 }
-    if(node.children)
-    {
-	 	for(var i = 0; i < node.children.length; i++)
-	 	   DeSelectNode(node.children[i]);
-    }
-}
-function ZoomExtentsAll() {
-   
-        var bb = WebGL.gSceneBounds;
+WebGL.needsRefresh = true;
+WebGL.gURL = "";
+WebGL.gviewer;
+WebGL.gSceneRoot;
+WebGL.gWireframeButton;
+WebGL.gUpButton;
+WebGL.gRadius = 1;
+WebGL.gCameraOffset = [ WebGL.gRadius, 0, 0 ];
+WebGL.gCameraTarget = [ 0, 0, 0 ];
+WebGL.gUpVector = [ 0, 1, 0 ];
+WebGL.gCameraGoal = WebGL.gCameraOffset;
+WebGL.gAnimating = false;
+WebGL.gOldX = 0;
+WebGL.gOldY = 0;
+WebGL.gMouseDown = false;
+WebGL.gGridNode;
+WebGL.gModelRoot;
+WebGL.gSceneBounds;
+WebGL.gOriginalSceneBounds;
+WebGL.gCamera;
+WebGL.ShadowCam;
+WebGL.ViewMatrixUniform;
+WebGL.ShadowMatrixUniform;
+WebGL.gAnimatingRotation = false;
+WebGL.gCanvasSizeUniform;
+WebGL.gPID = "";
+WebGL.gUnitScale = 1.0;
+WebGL.tempUpVec;
+WebGL.tempScale;
+WebGL.ShadowMapResolution = '1024.0';
+WebGL.ShadowDebugNode;
+WebGL.inFullScreen = false;
+WebGL.InUpload = false;
+WebGL.InWireframeUniform = null;
+WebGL.gButtonsInitialized = false;
+WebGL.PickBufferCam;
+WebGL.PickBufferTexture;
+WebGL.ManipulateMode = 'select';
+WebGL.PickBufferResolution = 512;
+WebGL.ThumbNails = [];
+WebGL.gCameraCenterGoal = [0, 0, 0];
+WebGL.LoadingComplete = false;
+WebGL.gUseTempTextureHandler = false;
+WebGL.MouseX = 0;
+WebGL.MouseY = 0;
 
-        WebGL.gAnimating = true;
+wisdown = false;
+aisdown = false;
+sisdown = false;
+disdown = false;
 
-        WebGL.gCameraCenterGoal = bb.GetCenter();
-        var tempvec = [0, 0, 0];
-        osg.Vec3.copy(WebGL.gCameraOffset, tempvec);
-        tempvec = osg.Vec3.normalize(tempvec);
-        tempvec = osg.Vec3.mult(tempvec, bb.GetRadius() * 2);
-        WebGL.gCameraGoal = tempvec;
-        
-}
-function ZoomExtentsSelected() {
-     
-            var bv = new SelectionBoundsVisitor();
-            bv.apply(WebGL.gSceneRoot);
-            if (bv.FoundSelection == true) {
-                var bb = bv.asBoundingBox();
 
-                WebGL.gAnimating = true;
-
-                WebGL.gCameraCenterGoal = bb.GetCenter();
-                var tempvec = [0, 0, 0];
-                osg.Vec3.copy(WebGL.gCameraOffset, tempvec);
-                tempvec = osg.Vec3.normalize(tempvec);
-                tempvec = osg.Vec3.mult(tempvec, Math.max(bb.GetRadius() * 2,WebGL.gSceneBounds.GetRadius()/9));
-                WebGL.gCameraGoal = tempvec;
-            }
-
-            return;
-        
-    
-}
-
- function SelectNode(node)
- {
-     if(node.pickedUniform)
-	 {
-	 	node.pickedUniform.set([1]);	 
-	 }
-     if(node.children)
-     {
-	 	for(var i = 0; i < node.children.length; i++)
-	 	   SelectNode(node.children[i]);
-     }
- }
- 
- function ShowBigTextureThumb(name)
- {
-     if(WebGL.BigThumb)
-	 {
-	     WebGL.BigThumb.detach();
-	     WebGL.BigThumb = null;
-	 }
-     
-     for(i =0 ; i < WebGL.ThumbNails.length; i++)
-	{
-	if( WebGL.ThumbNails[i].name == name)
-	    WebGL.ThumbNails[i].img.onmouseover(null);
-	}
- }
- 
- function SelectByName(node, name, selected)
- {
-     if(WebGL.BigThumb)
-	 {
-	     var bigname = WebGL.BigThumb.name;
-	     WebGL.BigThumb.detach();
-	     WebGL.BigThumb = null;
-
-	     if("texture: " + bigname == name+'big')
-		 return;
-	 }
-     
-      if(name.indexOf("texture") != -1)
-	  {
-	  	ShowBigTextureThumb(name.substr(name.indexOf("texture")+9));
-	  	return;
-	  }
-
-      if(node.name == name)
-	  selected = true;
-      
-      if(node.pickedUniform)
-	 {
-	    if(selected == true)
-		{
-		    SelectNode(node);
-		}
-	    if(selected != true) {
-	        DeSelectNode(node);
-		}
-
-	 }
-       if(node.children)
- 	 {
- 	 	for(var i = 0; i < node.children.length; i++)
- 	 	  SelectByName(node.children[i],name,selected);
- 	 
- 	 }
- }
- 
-function GetNodeByName(node, name)
- {
-     if(node.name == name)
-	 return node;
-     
-     if(node.children)
- 	 {
- 	 	for(var i = 0; i < node.children.length; i++)
-		{
-		  var ret=null;
- 	 	  ret = GetNodeByName(node.children[i],name);
-		  if(ret)
-		   return ret;
-		}
- 	 }
-	 
-	 return null;
- }
-function SelectByTextureSource(node, src)
-{
-     var name = GetTextureName(node.getStateSet());
-     if(name == src)
-	 SelectNode(node);
-     else if(node.children)
-	 {
-	 	for(var i = 0; i < node.children.length; i++)
-	 	   SelectByTextureSource(node.children[i],src);
-	 }
-}
  
 function BuildModelTransform()
 {
@@ -367,11 +193,11 @@ function BuildGridGeometry() {
     var QuadSizeY = WebGL.gSceneBounds.GetRadius() * 10;
     var rq;
     if (WebGLGetUpVector() == "Y") {
-	rq = osg.createTexuredQuad(QuadSizeX / 2.0, 0, -QuadSizeY / 2.0,
-		-QuadSizeX, 0, 0, 0, 0, QuadSizeY, WebGL.gSceneBounds.GetRadius(),
-		WebGL.gSceneBounds.GetRadius(), 0, 0);
+		rq = osg.createTexuredQuad(QuadSizeX / 2.0, 0, -QuadSizeY / 2.0,
+			-QuadSizeX, 0, 0, 0, 0, QuadSizeY, WebGL.gSceneBounds.GetRadius(),
+			WebGL.gSceneBounds.GetRadius(), 0, 0);
     } else {
-	rq = osg.createTexuredQuad(-QuadSizeX / 2.0, -QuadSizeY / 2.0, 0,
+		rq = osg.createTexuredQuad(-QuadSizeX / 2.0, -QuadSizeY / 2.0, 0,
 		QuadSizeX, 0, 0, 0, QuadSizeY, 0, WebGL.gSceneBounds.GetRadius(),
 		WebGL.gSceneBounds.GetRadius(), 0, 0);
     }
@@ -391,15 +217,11 @@ function BuildGridGeometry() {
 
     var n = new osg.MatrixTransform();
     n.addChild(rq);
-    // alert([WebGL.gSceneBounds.GetCenter()[0],WebGL.gSceneBounds.GetCenter()[1],WebGL.gSceneBounds.GetCenter()[2]]);
     if (WebGLGetUpVector() == "Z") {
-	n.matrix = osg.Matrix.makeTranslate(WebGL.gSceneBounds.GetCenter()[0],
-		WebGL.gSceneBounds.GetCenter()[1], WebGL.gSceneBounds.GetMin()[2]);
+		n.matrix = osg.Matrix.makeTranslate(WebGL.gSceneBounds.GetCenter()[0],WebGL.gSceneBounds.GetCenter()[1], WebGL.gSceneBounds.GetMin()[2]);
     } else
-	n.matrix = osg.Matrix.makeTranslate(WebGL.gSceneBounds.GetCenter()[0],
-		WebGL.gSceneBounds.GetMin()[1], WebGL.gSceneBounds.GetCenter()[2]);
+		n.matrix = osg.Matrix.makeTranslate(WebGL.gSceneBounds.GetCenter()[0],WebGL.gSceneBounds.GetMin()[1], WebGL.gSceneBounds.GetCenter()[2]);
     return n;
-
 }
 
 function LoadQueryParams() {
@@ -425,26 +247,26 @@ function convertEventToCanvas(e) {
     var myObject = WebGL.gviewer.canvas;
     var posx, posy;
     if (e.pageX || e.pageY) {
-	posx = e.pageX;
-	posy = e.pageY;
+		posx = e.pageX;
+		posy = e.pageY;
     } else if (e.clientX || e.clientY) {
-	posx = e.clientX + document.body.scrollLeft
-		+ document.documentElement.scrollLeft;
-	posy = e.clientY + document.body.scrollTop
-		+ document.documentElement.scrollTop;
+		posx = e.clientX + document.body.scrollLeft
+			+ document.documentElement.scrollLeft;
+		posy = e.clientY + document.body.scrollTop
+			+ document.documentElement.scrollTop;
     }
 
     var divGlobalOffset = function(obj) {
-	var x = 0, y = 0;
-	x = obj.offsetLeft;
-	y = obj.offsetTop;
-	var body = document.getElementsByTagName('body')[0];
-	while (obj.offsetParent && obj != body) {
-	    x += obj.offsetParent.offsetLeft;
-	    y += obj.offsetParent.offsetTop;
-	    obj = obj.offsetParent;
-	}
-	return [ x, y ];
+		var x = 0, y = 0;
+		x = obj.offsetLeft;
+		y = obj.offsetTop;
+		var body = document.getElementsByTagName('body')[0];
+		while (obj.offsetParent && obj != body) {
+			x += obj.offsetParent.offsetLeft;
+			y += obj.offsetParent.offsetTop;
+			obj = obj.offsetParent;
+		}
+		return [ x, y ];
     };
     // posx and posy contain the mouse position relative to the document
     // Do something with this information
@@ -461,7 +283,7 @@ function convertEventToCanvas(e) {
 function WebGLGetUpVector() {
     if (WebGL.gUpVector[0] == 0 && WebGL.gUpVector[1] == 1 && WebGL.gUpVector[2] == 0)
 	return "Y";
-    else if (WebGL.gUpVector[0] == 0 && WebGL.gUpVector[1] == 0 && WebGL.gUpVector[2] == 1)
+    if (WebGL.gUpVector[0] == 0 && WebGL.gUpVector[1] == 0 && WebGL.gUpVector[2] == 1)
 	return "Z";
 }
 function SetUpY() {
@@ -510,8 +332,7 @@ function Mousedown(x, y,button) {
 		WebGL.gCamera.removeChild(WebGL.GIBufferCam);
 	}
     
-    if(button == 2)
-	WebGL.MouseMode = "pan";
+    if(button == 2)WebGL.MouseMode = "pan";
     
     WebGL.gAnimating = false;
     WebGL.gMouseDown = true;
@@ -542,6 +363,45 @@ function Mouseup(x, y,button) {
     WebGL.MouseMoving = false;
     WebGL.gMouseDown = false;
 }
+function Mousemove(x, y) {
+    if(WebGL.gMouseDown){
+		WebGL.MouseMoving = true;
+	}
+    else{
+		WebGL.MouseMoving = false;
+	}
+    if(WebGL.MouseMode == "rotate")
+    {
+        if (WebGL.gMouseDown == true) {
+    		RotateCamera(x, y);
+        }
+    }
+    if(WebGL.MouseMode == "pan")
+    {
+        if (WebGL.gMouseDown == true) {
+    		PanCamera(x, y);
+        }
+    }
+    
+}
+
+function mousewheelfunction(delta)
+{  
+    if(delta)
+    {   
+		WebGL.gCamera.removeChild(WebGL.GodRaysAccumulatorCam);
+		WebGL.gCamera.addChild(WebGL.GodRaysAccumulatorCam);
+		grframecount = 0;
+        WebGL.gAnimating = false;
+        if (delta > 0) {
+    	// manipulator.distanceDecrease();
+    	WebGL.gCameraOffset = osg.Vec3.mult(WebGL.gCameraOffset, .9);
+        } else if (delta < 0) {
+    	WebGL.gCameraOffset = osg.Vec3.mult(WebGL.gCameraOffset, 1.1);
+        }
+        return false;
+    }	
+};
 
 function PanCamera(x, y) {
     var offset = osg.Matrix.transformVec4(WebGL.gCamera.getViewMatrix(), [-x,-y,0,1]);
@@ -559,26 +419,7 @@ function RotateCamera(x, y) {
     WebGL.gCameraOffset = osg.Matrix.transformVec3(osg.Matrix.inverse(r2),
 	    WebGL.gCameraOffset);
 }
-function Mousemove(x, y) {
-    
-    if(WebGL.gMouseDown)
-		WebGL.MouseMoving = true;
-    else
-		WebGL.MouseMoving = false;
-    if(WebGL.MouseMode == "rotate")
-    {
-        if (WebGL.gMouseDown == true) {
-    		RotateCamera(x, y);
-        }
-    }
-    if(WebGL.MouseMode == "pan")
-    {
-        if (WebGL.gMouseDown == true) {
-    		PanCamera(x, y);
-        }
-    }
-    
-}
+
 
 function UpdateBounds()
 {   
@@ -694,102 +535,39 @@ function UpdateCamera() {
 }
 
 
-function SendSceneToServer(node) {
-   
-    node.accept(new PrepareForExportVisitor());
-    
-    $.ajax({
-        type: "POST",
-        url: "Upload.aspx/SaveChanges",
-        data: JSON.stringify({indata:node}),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (object, responseStatus, request) {
-        }
 
-    });
-}
 
-function mousewheelfunction(delta)
-{  
-    if(delta)
-    {   
-		WebGL.gCamera.removeChild(WebGL.GodRaysAccumulatorCam);
-		WebGL.gCamera.addChild(WebGL.GodRaysAccumulatorCam);
-		grframecount = 0;
-        WebGL.gAnimating = false;
-        if (delta > 0) {
-    	// manipulator.distanceDecrease();
-    	WebGL.gCameraOffset = osg.Vec3.mult(WebGL.gCameraOffset, .9);
-        } else if (delta < 0) {
-    	WebGL.gCameraOffset = osg.Vec3.mult(WebGL.gCameraOffset, 1.1);
-        }
-        return false;
-    }	
-};
-
-function CreateModelEditorDialog()
-{
-    
-    if(!WebGL.editordialog)
-    {
-        WebGL.editordialog = $('<div></div>')
-        .load('../editorinterior.html')
-        .dialog({
-            autoOpen: true,
-            title: 'Model Heirarchy',
-            show: "fold",
-            hide: "fold",
-            //modal: true,
-            resizable: false,
-            draggable: true,
-            position: 'center',
-            width: 'auto',
-            height: 'auto',
-            maxHeight: '500px',
-            maxWidth: '500px'
-        });
-    }else
-	{
-		WebGL.editordialog.dialog('open');
-	}
-
-}
 var brushsize = 10;
 var brushstrength = .01;
 var brushmode = 0.0;
 var brushfalloff = 1;
 function BindInputs() {
-
     jQuery(WebGL.gviewer.canvas).bind({
-	mousedown : function(ev) {
-	    var evt = convertEventToCanvas(ev);
-	    if(WebGL.gMouseDown == false)
-	    Mousedown(evt[0], evt[1],ev.which);
-	    UpdateCamera();
-	},
-	mouseup : function(ev) {
-	    var evt = convertEventToCanvas(ev);
-	    if(WebGL.gMouseDown == true)
-		Mouseup(evt[0], evt[1],ev.which);
-	    UpdateCamera();
-	},
-	
-	mousemove : function(ev) {
-	    ev.preventDefault();
-	    var evt = convertEventToCanvas(ev);
-	    WebGL.MouseX = evt[2];
-	    WebGL.MouseY = evt[3];
-	   	
-	    Mousemove(evt[0], evt[1]);
-	    UpdateCamera();
-	      
-	    return false;
-	}
+		mousedown : function(ev) {
+			var evt = convertEventToCanvas(ev);
+			if(WebGL.gMouseDown == false)
+			Mousedown(evt[0], evt[1],ev.which);
+			UpdateCamera();
+		},
+		mouseup : function(ev) {
+			var evt = convertEventToCanvas(ev);
+			if(WebGL.gMouseDown == true)
+			Mouseup(evt[0], evt[1],ev.which);
+			UpdateCamera();
+		},
+		mousemove : function(ev) {
+			ev.preventDefault();
+			var evt = convertEventToCanvas(ev);
+			WebGL.MouseX = evt[2];
+			WebGL.MouseY = evt[3];
+			Mousemove(evt[0], evt[1]);
+			UpdateCamera();
+			return false;
+		}
     });
     document.onkeyup = function(event){
-	
-		 if (  event.keyCode == 87)
+		//w key
+		if (event.keyCode == 87)
 		{		
 			wisdown = false;
 			return false;
@@ -818,41 +596,30 @@ function BindInputs() {
 	
 	}
     document.onkeydown = function(event){
-
-	if (event.keyCode === 36) { // pageup
-	    WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
-	    return false;
-	} else if (event.keyCode === 35) { // pagedown
-	    WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
-	    return false;
-	}
-	//w key
-	 if (  event.keyCode == 87)
-	{		
-		wisdown = true;
-	    return false;
-	}
-	//s key
-	else if (  event.keyCode == 83)
-	{		
-	   
-	    sisdown = true;
-	    return false;
-	}
-	//a key
-	else if ( event.keyCode == 65)
-	{		
-	    
-	   aisdown = true;
-	    return false;
-	}
-	//d key
-	else if (  event.keyCode == 68)
-	{		
-	    
-	   disdown = true;
-	    return false;
-	}
+		//w key
+		if (  event.keyCode == 87)
+		{		
+			wisdown = true;
+			return false;
+		}
+		//s key
+		else if (  event.keyCode == 83)
+		{		
+			sisdown = true;
+			return false;
+		}
+		//a key
+		else if ( event.keyCode == 65)
+		{		
+			aisdown = true;
+			return false;
+		}
+		//d key
+		else if (  event.keyCode == 68)
+		{		
+			disdown = true;
+			return false;
+		}
 	
 	 return true;
 	
@@ -864,21 +631,6 @@ function BindInputs() {
         });
     }
     
-    if (true) {
-	jQuery(document).bind({
-	    'keydown' : function(event) {
-		
-		if (event.keyCode === 33) { // pageup
-		    WebGL.gviewer.scene.addChild(WebGL.ShadowDebugNode);
-		    return false;
-		} else if (event.keyCode === 34) { // pagedown
-		    WebGL.gviewer.scene.removeChild(WebGL.ShadowDebugNode);
-		    return false;
-		}
-		return true;
-	    }
-	});
-    }
 }
 function GoFullScreen() {
     if (WebGL.inFullScreen == false) {
@@ -2649,8 +2401,7 @@ function createScene(viewer, url) {
 
     SetupRendering();
     SetupTerrainHeight();
-	
-    
+
     WebGL.LoadingComplete = true;
     
     
