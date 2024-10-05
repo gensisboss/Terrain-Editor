@@ -1,5 +1,5 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <style>
 body {
@@ -38,12 +38,6 @@ a:hover {
 <title>Weg GL Terrain-Editor</title>
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
 
-<script type="text/javascript" src="./Scripts/OSGJS/js/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="./Scripts/OSGJS/js/jquery.mousewheel.js"></script>
-<script type="text/javascript" src="./Scripts/OSGJS/js/jquery-ui-1.8.18.custom.min.js"></script>
-
-<script type="text/javascript" src="./Scripts/swfobject.js"></script>
-<script type="text/javascript" src="./Scripts/downloadify.min.js"></script>
 <script type="text/javascript" src="./Scripts/OSGJS/js/stats.js"></script>
 <script type="text/javascript" src="./Scripts/OSGJS/js/webgl-utils.js"></script>
 <script type="text/javascript" src="./Scripts/OSGJS/js/osg.js"></script>
@@ -51,17 +45,22 @@ a:hover {
 <script type="text/javascript" src="./Scripts/OSGJS/js/osgAnimation.js"></script>
 <script type="text/javascript" src="./Scripts/OSGJS/js/osgGA.js"></script>
 <script type="text/javascript" src="./Scripts/OSGJS/js/osgViewer.js"></script>
+<script type="text/javascript" src="./Scripts/OSGJS/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="./Scripts/OSGJS/js/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="./Scripts/OSGJS/js/jquery-ui-1.8.18.custom.min.js"></script>
+
+<script type="text/javascript" src="./Scripts/ambientoccclusion.js"></script>
+<script type="text/javascript" src="./Scripts/downloadify.min.js"></script>
+<script type="text/javascript" src="./Scripts/drawing.js"></script>
+<script type="text/javascript" src="./Scripts/globalillumination.js"></script>
+<script type="text/javascript" src="./Scripts/godrays.js"></script>
+<script type="text/javascript" src="./Scripts/jquery.dialogextend.min.js"></script>
+<script type="text/javascript" src="./Scripts/swfobject.js"></script>
 <script type="text/javascript" src="./Scripts/main.js"></script>
 <script type="text/javascript" src="./Scripts/togglecam.js"></script>
-<script type="text/javascript" src="./Scripts/drawing.js"></script>
 <script type="text/javascript" src="./Scripts/landscape.js"></script>
-<script type="text/javascript" src="./Scripts/ambientoccclusion.js"></script>
 <script type="text/javascript" src="./Scripts/softshadows.js"></script>
-<script type="text/javascript" src="./Scripts/godrays.js"></script>
-<script type="text/javascript" src="./Scripts/globalillumination.js"></script>
-<script type="text/javascript" src="./Scripts/jquery.dialogextend.min.js"></script>
 <script type="text/javascript" src="./Scripts/OBJExport.js"></script>
-
 <script type="text/javascript" src="./Scripts/jszip.js"></script>
 <script type="text/javascript" src="./Scripts/jszip-deflate.js"></script>
 <script type="text/javascript" src="./Scripts/jszip-inflate.js"></script>
@@ -88,9 +87,12 @@ function CustomMix()
 }
 function saveImageAs (imgOrURL) {
     if (typeof imgOrURL == 'object')
-      imgOrURL = imgOrURL.src;
-    window.win = open (imgOrURL);
-    setTimeout('win.document.execCommand("SaveAs")', 500);
+    	imgOrURL = imgOrURL.src;
+		var iframe = "<iframe width='100%' height='100%' src='" + imgOrURL + "'></iframe>"
+		var x = window.open()
+		x.document.open()
+		x.document.write(iframe)
+		x.document.close()
   }
 function doSave(num)
 {
@@ -101,46 +103,46 @@ function doSave(num)
     gl.pixelStorei(gl["UNPACK_COLORSPACE_CONVERSION_WEBGL"], false);
 	WebGL.gviewer.canvas.height = 512;
 	WebGL.gviewer.canvas.width = 512;
-			WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.DrawBufferTexture);
-	 		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
-			WebGL.gviewer.frame();
-			WebGL.gviewer.gl.flush();
-			try{
-		    	localStorage["heightmap" + num] = WebGL.gviewer.canvas.toDataURL();
-			}
-			catch(e)
-			{
-			 	 alert(e); //data wasn't successfully saved due to quota exceed so throw an error
-			}
-		    WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
+	WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.DrawBufferTexture);
+	WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
+	WebGL.gviewer.frame();
+	WebGL.gviewer.gl.flush();
+	try{
+		localStorage["heightmap" + num] = WebGL.gviewer.canvas.toDataURL();
+	}
+	catch(e)
+	{
+		alert(e); //data wasn't successfully saved due to quota exceed so throw an error
+	}
+	WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
 
 
 	var gl = WebGL.gviewer.gl;
 
-			WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.DrawTextureBufferTexture);
-	 		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
-			WebGL.gviewer.frame();
-			WebGL.gviewer.gl.flush();
-			try{
-			    	localStorage["texturemixmap" + num] = WebGL.gviewer.canvas.toDataURL();
-				}
-				catch(e)
-				{
-				 	 alert(e); //data wasn't successfully saved due to quota exceed so throw an error
-				}
-			    WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
-		    WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
-			WebGL.gviewer.canvas.height = 1024;
-			WebGL.gviewer.canvas.width = 1280;
+	WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.DrawTextureBufferTexture);
+	WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
+	WebGL.gviewer.frame();
+	WebGL.gviewer.gl.flush();
+	try{
+			localStorage["texturemixmap" + num] = WebGL.gviewer.canvas.toDataURL();
+		}
+	catch(e)
+		{
+				alert(e); //data wasn't successfully saved due to quota exceed so throw an error
+		}
+	WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
+	WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
+	WebGL.gviewer.canvas.height = 1024;
+	WebGL.gviewer.canvas.width = 1280;
 	
-			try{
-			    	localStorage["currentmaterial" + num] = currentmaterial;
-			    	localStorage["AutoMix" + num] = automix;
-				}
-				catch(e)
-				{
-				 	 alert(e); //data wasn't successfully saved due to quota exceed so throw an error
-				}
+	try{
+			localStorage["currentmaterial" + num] = currentmaterial;
+			localStorage["AutoMix" + num] = automix;
+		}
+	catch(e)
+		{
+			alert(e); //data wasn't successfully saved due to quota exceed so throw an error
+		}
     
     
 }
@@ -194,21 +196,21 @@ function refresh()
 }
 function LoadLandscape(file)
 {
-		var load = osg.Texture.create(file);
-		load.image.onload = function()
-		{
-		    	var gl = WebGL.gviewer.gl;
-		        gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
-		        gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, false);
-		        gl.bindTexture(gl.TEXTURE_2D, WebGL.DrawBufferCam.texA.textureObject);
-		        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, load.image);
+	var load = osg.Texture.create(file);
+	load.image.onload = function()
+	{
+		var gl = WebGL.gviewer.gl;
+		gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+		gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, false);
+		gl.bindTexture(gl.TEXTURE_2D, WebGL.DrawBufferCam.texA.textureObject);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, load.image);
 
-		        gl.bindTexture(gl.TEXTURE_2D, WebGL.DrawBufferCam.texB.textureObject);
-		        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, load.image);
+		gl.bindTexture(gl.TEXTURE_2D, WebGL.DrawBufferCam.texB.textureObject);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, load.image);
 
-		        refresh();
-		        $("#loading").dialog("close");
-		}
+		refresh();
+		$("#loading").dialog("close");
+	}
 }
 function ShadowsAreOn()
 {
@@ -232,38 +234,25 @@ $(document).ready(function(){
 	      return 'Terrain.zip';
 	    },
 	    data: function(){ 
-		
-		$("#loading").dialog("open");
 			var zip = new JSZip();
-			
-			 WebGL.gModelRoot.addChild(WebGL.BakeCam);
-			 WebGL.gviewer.frame();
-				WebGL.gviewer.gl.flush();
-				 WebGL.gviewer.frame();
-					WebGL.gviewer.gl.flush();
-				WebGL.gModelRoot.removeChild(WebGL.BakeCam);
-				
-				var gl = WebGL.gviewer.gl;
+			var gl = WebGL.gviewer.gl;
 			     
-				WebGL.gviewer.canvas.height = 1024;
-				WebGL.gviewer.canvas.width = 1024;
-						WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.BakeTexture);
-				 		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
-				 		WebGL.gCamera.setViewport(new osg.Viewport(0, 0, 1024, 1024));
-						WebGL.gviewer.frame();
-						WebGL.gviewer.gl.flush();
-						//WebGL.gviewer.frame();
-						//WebGL.gviewer.gl.flush();
-					    var texture = WebGL.gviewer.canvas.toDataURL();
+			WebGL.gviewer.canvas.height = 1024;
+			WebGL.gviewer.canvas.width = 1024;
+			WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.BakeTexture);
+			WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
+			WebGL.gCamera.setViewport(new osg.Viewport(0, 0, 1024, 1024));
+			WebGL.gviewer.frame();
+			WebGL.gviewer.gl.flush();
 
-					    WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
-						WebGL.gviewer.canvas.height = $(window).height();
-						WebGL.gviewer.canvas.width = $(window).width();
-						WebGL.gCamera.setViewport(new osg.Viewport(0, 0, $(window).width(), $(window).height()));
-						//WebGL.gviewer.frame();
-						//WebGL.gviewer.gl.flush();
-						
-						texture = texture.substr(22);
+			var texture = WebGL.gviewer.canvas.toDataURL();
+
+			WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
+			WebGL.gviewer.canvas.height = $(window).height();
+			WebGL.gviewer.canvas.width = $(window).width();
+			WebGL.gCamera.setViewport(new osg.Viewport(0, 0, $(window).width(), $(window).height()));
+			
+			texture = texture.substr(22);
 			
 			zip.file("Terrain.obj", exportOBJ());
 			zip.file("Terrain.mtl", exportMTL());
@@ -480,209 +469,183 @@ $(document).ready(function(){
     
     $("#UpdateHeightmap").button({label:"Height"});
     $("#UpdateHeightmap").click(function(){
-		
-	var gl = WebGL.gviewer.gl;
-        gl.pixelStorei(gl["UNPACK_PREMULTIPLY_ALPHA_WEBGL"], false);
-        gl.pixelStorei(gl["UNPACK_COLORSPACE_CONVERSION_WEBGL"], false);
-	WebGL.gviewer.canvas.height = 512;
-	WebGL.gviewer.canvas.width = 512;
-			WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.DrawBufferTexture);
-	 		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
-			WebGL.gviewer.frame();
-			WebGL.gviewer.gl.flush();
-		    document.getElementById("heightmap").src = WebGL.gviewer.canvas.toDataURL();
-		    WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
-			WebGL.gviewer.canvas.height = $(window).height();
-			WebGL.gviewer.canvas.width = $(window).width();
+		var gl = WebGL.gviewer.gl;
+		gl.pixelStorei(gl["UNPACK_PREMULTIPLY_ALPHA_WEBGL"], false);
+		gl.pixelStorei(gl["UNPACK_COLORSPACE_CONVERSION_WEBGL"], false);
+		WebGL.gviewer.canvas.height = 512;
+		WebGL.gviewer.canvas.width = 512;
+		WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.DrawBufferTexture);
+		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
+		WebGL.gviewer.frame();
+		WebGL.gviewer.gl.flush();
+		document.getElementById("heightmap").src = WebGL.gviewer.canvas.toDataURL();
+		WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
+		WebGL.gviewer.canvas.height = $(window).height();
+		WebGL.gviewer.canvas.width = $(window).width();
 	});
     $("#UpdateHeightmap").html('Height');
     
     $("#UpdateTexturemap").button({label:"Texture"});
     $("#UpdateTexturemap").click(function(){
-		
-	var gl = WebGL.gviewer.gl;
+		var gl = WebGL.gviewer.gl;
         gl.pixelStorei(gl["UNPACK_PREMULTIPLY_ALPHA_WEBGL"], false);
         gl.pixelStorei(gl["UNPACK_COLORSPACE_CONVERSION_WEBGL"], false);
-	WebGL.gviewer.canvas.height = 512;
-	WebGL.gviewer.canvas.width = 512;
-			WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.DrawTextureBufferTexture);
-	 		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
-			WebGL.gviewer.frame();
-			WebGL.gviewer.gl.flush();
-		    document.getElementById("heightmap").src = WebGL.gviewer.canvas.toDataURL();
-		    WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
-			WebGL.gviewer.canvas.height = $(window).height();
-			WebGL.gviewer.canvas.width = $(window).width();
+		WebGL.gviewer.canvas.height = 512;
+		WebGL.gviewer.canvas.width = 512;
+		WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.DrawTextureBufferTexture);
+		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
+		WebGL.gviewer.frame();
+		WebGL.gviewer.gl.flush();
+		document.getElementById("heightmap").src = WebGL.gviewer.canvas.toDataURL();
+		WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
+		WebGL.gviewer.canvas.height = $(window).height();
+		WebGL.gviewer.canvas.width = $(window).width();
 	});
     $("#UpdateTexturemap").html('Texture');
     
     $("#UpdatePickmap").button({label:"Pick"});
     $("#UpdatePickmap").click(function(){
-		
-	WebGL.gviewer.canvas.height = 512;
-	WebGL.gviewer.canvas.width = 512;
-			WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.PickBufferTexture);
-	 		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
-			WebGL.gviewer.frame();
-			WebGL.gviewer.gl.flush();
-		    document.getElementById("heightmap").src = WebGL.gviewer.canvas.toDataURL();
-		    WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
-			WebGL.gviewer.canvas.height = $(window).height();
-			WebGL.gviewer.canvas.width = $(window).width();
+		WebGL.gviewer.canvas.height = 512;
+		WebGL.gviewer.canvas.width = 512;
+		WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.PickBufferTexture);
+		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
+		WebGL.gviewer.frame();
+		WebGL.gviewer.gl.flush();
+		document.getElementById("heightmap").src = WebGL.gviewer.canvas.toDataURL();
+		WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
+		WebGL.gviewer.canvas.height = $(window).height();
+		WebGL.gviewer.canvas.width = $(window).width();
 	});
     $("#UpdatePickmap").html('Pick');
     
     $("#UpdateShadowmap").button({label:"Shadow"});
     $("#UpdateShadowmap").click(function(){
-		
-	WebGL.gviewer.canvas.height = 512;
-	WebGL.gviewer.canvas.width = 512;
-			WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.SSBufferTexture);
-	 		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
-			WebGL.gviewer.frame();
-			WebGL.gviewer.gl.flush();
-		    document.getElementById("heightmap").src = WebGL.gviewer.canvas.toDataURL();
-		    WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
-			WebGL.gviewer.canvas.height = $(window).height();
-			WebGL.gviewer.canvas.width = $(window).width();
+		WebGL.gviewer.canvas.height = 512;
+		WebGL.gviewer.canvas.width = 512;
+		WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.SSBufferTexture);
+		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
+		WebGL.gviewer.frame();
+		WebGL.gviewer.gl.flush();
+		document.getElementById("heightmap").src = WebGL.gviewer.canvas.toDataURL();
+		WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
+		WebGL.gviewer.canvas.height = $(window).height();
+		WebGL.gviewer.canvas.width = $(window).width();
 	});
-    
     $("#UpdateShadowmap").html('Shadow');
     
     $("#UpdateAOmap").button({label:"Shadow"});
     $("#UpdateAOmap").click(function(){
-		
-	WebGL.gviewer.canvas.height = 512;
-	WebGL.gviewer.canvas.width = 512;
-			WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.AOBufferTexture);
-	 		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
-			WebGL.gviewer.frame();
-			WebGL.gviewer.gl.flush();
-		    document.getElementById("heightmap").src = WebGL.gviewer.canvas.toDataURL();
-		    WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
-			WebGL.gviewer.canvas.height = $(window).height();
-			WebGL.gviewer.canvas.width = $(window).width();
+		WebGL.gviewer.canvas.height = 512;
+		WebGL.gviewer.canvas.width = 512;
+		WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.AOBufferTexture);
+		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
+		WebGL.gviewer.frame();
+		WebGL.gviewer.gl.flush();
+		document.getElementById("heightmap").src = WebGL.gviewer.canvas.toDataURL();
+		WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
+		WebGL.gviewer.canvas.height = $(window).height();
+		WebGL.gviewer.canvas.width = $(window).width();
 	});
-    
     $("#UpdateAOmap").html('AO');
     
     $("#UpdateGIMap").button({label:"GI"});
     $("#UpdateGIMap").click(function(){
-		
-	WebGL.gviewer.canvas.height = 512;
-	WebGL.gviewer.canvas.width = 512;
-			WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.GIBufferTexture);
-	 		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
-			WebGL.gviewer.frame();
-			WebGL.gviewer.gl.flush();
-		    document.getElementById("heightmap").src = WebGL.gviewer.canvas.toDataURL();
-		    WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
-			WebGL.gviewer.canvas.height = $(window).height();
-			WebGL.gviewer.canvas.width = $(window).width();
+		WebGL.gviewer.canvas.height = 512;
+		WebGL.gviewer.canvas.width = 512;
+		WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.GIBufferTexture);
+		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
+		WebGL.gviewer.frame();
+		WebGL.gviewer.gl.flush();
+		document.getElementById("heightmap").src = WebGL.gviewer.canvas.toDataURL();
+		WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
+		WebGL.gviewer.canvas.height = $(window).height();
+		WebGL.gviewer.canvas.width = $(window).width();
 	});
-    
     $("#UpdateGIMap").html('GI');
     
     $("#UpdateShadowVolumeMap").button({label:"S. Volume"});
     $("#UpdateShadowVolumeMap").click(function(){
-		
-	WebGL.gviewer.canvas.height = 512;
-	WebGL.gviewer.canvas.width = 512;
-			WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.ShadowVolumeBufferTexture);
-	 		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
-			WebGL.gviewer.frame();
-			WebGL.gviewer.gl.flush();
-		    document.getElementById("heightmap").src = WebGL.gviewer.canvas.toDataURL();
-		    WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
-			WebGL.gviewer.canvas.height = $(window).height();
-			WebGL.gviewer.canvas.width = $(window).width();
+		WebGL.gviewer.canvas.height = 512;
+		WebGL.gviewer.canvas.width = 512;
+		WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.ShadowVolumeBufferTexture);
+		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
+		WebGL.gviewer.frame();
+		WebGL.gviewer.gl.flush();
+		document.getElementById("heightmap").src = WebGL.gviewer.canvas.toDataURL();
+		WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
+		WebGL.gviewer.canvas.height = $(window).height();
+		WebGL.gviewer.canvas.width = $(window).width();
 	});
-    
-    $("#UpdateShadowVolumeMap").html('S. Volume');
+    $("#UpdateShadowVolumeMap").html('ShadowVolume');
     
     $("#UpdateRaysMap").button({label:"Rays"});
     $("#UpdateRaysMap").click(function(){
-		
-	WebGL.gviewer.canvas.height = 512;
-	WebGL.gviewer.canvas.width = 512;
-			WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.GodRaysAccumulatorTexture);
-	 		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
-			WebGL.gviewer.frame();
-			WebGL.gviewer.gl.flush();
-		    document.getElementById("heightmap").src = WebGL.gviewer.canvas.toDataURL();
-		    WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
-			WebGL.gviewer.canvas.height = $(window).height();
-			WebGL.gviewer.canvas.width = $(window).width();
+		WebGL.gviewer.canvas.height = 512;
+		WebGL.gviewer.canvas.width = 512;
+		WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.GodRaysAccumulatorTexture);
+		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
+		WebGL.gviewer.frame();
+		WebGL.gviewer.gl.flush();
+		document.getElementById("heightmap").src = WebGL.gviewer.canvas.toDataURL();
+		WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
+		WebGL.gviewer.canvas.height = $(window).height();
+		WebGL.gviewer.canvas.width = $(window).width();
 	});
-    
     $("#UpdateRaysMap").html('Rays');
     
     $("#UpdateDepthMap").button({label:"Depth"});
     $("#UpdateDepthMap").click(function(){
-		
-	WebGL.gviewer.canvas.height = 512;
-	WebGL.gviewer.canvas.width = 512;
-			WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.DepthBufferTexture);
-	 		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
-			WebGL.gviewer.frame();
-			WebGL.gviewer.gl.flush();
-		    document.getElementById("heightmap").src = WebGL.gviewer.canvas.toDataURL();
-		    WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
-			WebGL.gviewer.canvas.height = $(window).height();
-			WebGL.gviewer.canvas.width = $(window).width();
+		WebGL.gviewer.canvas.height = 512;
+		WebGL.gviewer.canvas.width = 512;
+		WebGL.PickDebugNode.getOrCreateStateSet().setTextureAttribute(0,WebGL.DepthBufferTexture);
+		WebGL.gviewer.scene.addChild(WebGL.PickDebugNode);
+		WebGL.gviewer.frame();
+		WebGL.gviewer.gl.flush();
+		document.getElementById("heightmap").src = WebGL.gviewer.canvas.toDataURL();
+		WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
+		WebGL.gviewer.canvas.height = $(window).height();
+		WebGL.gviewer.canvas.width = $(window).width();
 	});
-    
     $("#UpdateDepthMap").html('Depth');
     
-    $("#render").button({label:"R"});
+    $("#render").button({label:"Render"});
     $("#render").click(function(){
-		
-	
-	WebGL.gviewer.canvas.height = 512;
-	WebGL.gviewer.canvas.width = 512;
-			WebGL.gviewer.frame();
-			WebGL.gviewer.gl.flush();
-		    document.getElementById("heightmap").src = WebGL.gviewer.canvas.toDataURL();
-			WebGL.gviewer.canvas.height = $(window).height();
-			WebGL.gviewer.canvas.width = $(window).width();
-		    
+		WebGL.gviewer.canvas.height = 512;
+		WebGL.gviewer.canvas.width = 512;
+		WebGL.gviewer.frame();
+		WebGL.gviewer.gl.flush();
+		document.getElementById("heightmap").src = WebGL.gviewer.canvas.toDataURL();
+		WebGL.gviewer.canvas.height = $(window).height();
+		WebGL.gviewer.canvas.width = $(window).width();   
 	});
-    $("#render").html('R');
+	$("#render").html('Render');
+
     
    
     $("#crater").button({label:"crater"});
     $("#crater").click(function(){
-	   
-	
-	 LoadLandscape("./Assets/Textures/crater.png");
-	 WebGL.TerrainState.setTexture(0,WebGL.DiffuseTex2);
-	 WebGL.TerrainState.setTexture(5,WebGL.NormalTex2);
-	 refresh();
-		
+		LoadLandscape("./Assets/Textures/crater.png");
+		WebGL.TerrainState.setTexture(0,WebGL.DiffuseTex2);
+		WebGL.TerrainState.setTexture(5,WebGL.NormalTex2);
+		refresh();
 	});
     $("#crater").html('Crater');
     
     $("#mountain").button({label:"mountain"});
     $("#mountain").click(function(){
-	   
-	
-	 LoadLandscape("./Assets/Textures/mountain.png");
-	 WebGL.TerrainState.setTexture(0,WebGL.DiffuseTex1);
-	 WebGL.TerrainState.setTexture(5,WebGL.NormalTex1);
-	 refresh();
-		
+		LoadLandscape("./Assets/Textures/mountain.png");
+		WebGL.TerrainState.setTexture(0,WebGL.DiffuseTex1);
+		WebGL.TerrainState.setTexture(5,WebGL.NormalTex1);
+	 	refresh();	
 	});
     $("#mountain").html('Mountain');
     
     $("#canyon").button({label:"canyon"});
     $("#canyon").click(function(){
-	   
-	
-	 LoadLandscape("./Assets/Textures/canyon.png");
-	 WebGL.TerrainState.setTexture(0,WebGL.DiffuseTex3);
-	 WebGL.TerrainState.setTexture(5,WebGL.NormalTex3);
-	 refresh();
-		
+		LoadLandscape("./Assets/Textures/canyon.png");
+		WebGL.TerrainState.setTexture(0,WebGL.DiffuseTex3);
+		WebGL.TerrainState.setTexture(5,WebGL.NormalTex3);
+		refresh();
 	});
     $("#canyon").html('Canyon');
     
@@ -726,7 +689,6 @@ $(document).ready(function(){
     $("#load3").html('load');
     
    
-    
     $("#BrushStregnth").slider({min:-.005,max:.005,step:.0001,label:"Size",slide:function(event, ui){
 	    brushstrength = ui.value;
 	}});
@@ -778,17 +740,14 @@ $(document).ready(function(){
 	$(window).resize(function() {
 	    document.getElementById("WebGLCanvas").width = $(window).width();
 		document.getElementById("WebGLCanvas").height = $(window).height();
-		
 		WebGL.gCamera.setViewport(new osg.Viewport(0, 0, $(window).width(), $(window).height()));
 	  });
 	
 	initWebGL("/Users/gongganghao/Downloads/Terrain-Editor/Assets/Models/matv01_veh.json", false, "Y", 1.0  );
 
 	window.setTimeout(function(){
-		
 		Mousedown(-1,-1, 1)
 	window.setTimeout(function(){
-		
 		Mouseup(-1,-1, 1)
 	},300);
 },300);
@@ -796,33 +755,15 @@ $(document).ready(function(){
 });
 </script>
 
-
-<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-30224462-1']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
 </head>
-
-
 
 <body style="font-size:10px">
 
 	<div id="canvas_Wrapper" >
 		<canvas id="WebGLCanvas" style="border: none ;" width=512 height=512>
-		
 		</canvas>
 		<div id="accordionDialog">
 		<div id="accordion">
-		
 			<h3><a href="#">Editing Tools</a></h3>
 			<div id="Brushoptions" style="color:black;top:0px;left:0px">
 				Size<div id="BrushSize" ></div>
@@ -845,7 +786,6 @@ $(document).ready(function(){
 				<div id="BrushTexture2" style="width:50px"></div>	
 				<div id="BrushTexture3" style="width:50px"></div>	
 				<div id="BrushTexture4" style="width:50px"></div>					
-				
 			</div>
 			<h3><a href="#">Render Options</a></h3>
 			<div id="Rendering" style="color:black;top:0px;left:0px">
@@ -861,7 +801,6 @@ $(document).ready(function(){
 			</div>
 			<h3><a href="#">Set Material</a></h3>
 			<div id="Material" style="color:black;top:0px;left:0px">
-			
 				<div id="Material1" ></div>
 				<div id="Material2" ></div>
 				<div id="Material3" ></div>
@@ -906,7 +845,6 @@ $(document).ready(function(){
 		</div>
 		</div>
 	</div>
-<div id="loading"><img src="./images/loading2.gif"></img></div>
 </body>
 
 </html>

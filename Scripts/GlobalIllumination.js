@@ -1,10 +1,3 @@
-/*
-Copyright 2012 Rob Chadwick (rchadwic@gmail.com)
-This work is licensed under a Creative Commons 
-Attribution-NonCommercial-ShareAlike 3.0 Unported License.
-http://creativecommons.org/licenses/by-nc-sa/3.0/
-*/
-
 function BuildGIBufferCamera() {
 
    var togglecam = new toggleRTTCam();
