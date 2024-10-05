@@ -86,14 +86,12 @@ function CustomMix()
     WebGL.gRenderOptionsUniform.set([WebGL.gRenderOptionsUniform.data[0],WebGL.gRenderOptionsUniform.data[1],WebGL.gRenderOptionsUniform.data[2],1]);
     $("#AutoMix").html('Custom');
 }
-
 function saveImageAs (imgOrURL) {
     if (typeof imgOrURL == 'object')
       imgOrURL = imgOrURL.src;
     window.win = open (imgOrURL);
     setTimeout('win.document.execCommand("SaveAs")', 500);
   }
- 
 function doSave(num)
 {
     localStorage["heightmap" + num] = null;
@@ -112,9 +110,7 @@ function doSave(num)
 			}
 			catch(e)
 			{
-			    //if (e == QUOTA_EXCEEDED_ERR) {
 			 	 alert(e); //data wasn't successfully saved due to quota exceed so throw an error
-				//}
 			}
 		    WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
 
@@ -130,9 +126,7 @@ function doSave(num)
 				}
 				catch(e)
 				{
-				//    if (e == QUOTA_EXCEEDED_ERR) {
 				 	 alert(e); //data wasn't successfully saved due to quota exceed so throw an error
-				//	}
 				}
 			    WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
 		    WebGL.gviewer.scene.removeChild(WebGL.PickDebugNode);
@@ -145,9 +139,7 @@ function doSave(num)
 				}
 				catch(e)
 				{
-				   // if (e == QUOTA_EXCEEDED_ERR) {
 				 	 alert(e); //data wasn't successfully saved due to quota exceed so throw an error
-					//}
 				}
     
     
@@ -225,18 +217,16 @@ function ShadowsAreOn()
 function AOisOn()
 {
     return WebGL.gRenderOptionsUniform2.data[0] > 0;   
-}function GIisOn()
+}
+function GIisOn()
 {
     return WebGL.gRenderOptionsUniform2.data[2] > 0;   
 }
-
 function AtmosphereShadowsAreOn()
 {
     return WebGL.gRenderOptionsUniform2.data[1] > 1;   
 }
 $(document).ready(function(){
-    
-  
     Downloadify.create(document.getElementById('ExportOBJ'),{
 	    filename: function(){
 	      return 'Terrain.zip';
@@ -302,8 +292,6 @@ $(document).ready(function(){
 	    append: false,
 	    dataType: 'base64'
 	  });
-   
-   
    
     $("#Textured").button({label:"Textured"});
     $("#Textured").click(function(){
@@ -794,7 +782,7 @@ $(document).ready(function(){
 		WebGL.gCamera.setViewport(new osg.Viewport(0, 0, $(window).width(), $(window).height()));
 	  });
 	
-	initWebGL("file:///C:/Development\\HTML5Game\\Assets\\Models\\matv01_veh.json", false, "Y", 1.0  );
+	initWebGL("/Users/gongganghao/Downloads/Terrain-Editor/Assets/Models/matv01_veh.json", false, "Y", 1.0  );
 
 	window.setTimeout(function(){
 		
@@ -898,7 +886,6 @@ $(document).ready(function(){
 				<div id="crater" ></div>
 				<div id="mountain" ></div>
 				<div id="canyon" ></div>
-				<div></br>Load an example terrain. This is destructive! You'll loose whatever you're working on.</div>
 				</br></br>
 				Slot 1:
 				<div id="save1" ></div>
@@ -915,7 +902,6 @@ $(document).ready(function(){
 			
 				<div id="ExportOBJ" ></div>
 				<div id="ExportTexture" ></div>
-				<div>Save and load a terrain. This uses HTML5 LocalStorage, so it will persist even after you close the browser.</div>
 			</div>
 		</div>
 		</div>

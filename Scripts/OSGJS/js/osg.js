@@ -1147,8 +1147,6 @@ osg.Vec3 = {
 
 };
 
-
-
 osg.Vec4 = {
 
     dot: function(a, b) {
@@ -1222,8 +1220,6 @@ osg.Vec4 = {
         return r;
     }
 };
-
-
 
 osg.Quat = {
     makeIdentity: function(element) { return osg.Quat.init(element); },

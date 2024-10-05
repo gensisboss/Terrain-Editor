@@ -14,7 +14,6 @@ function BuildDrawBufferCamera() {
     quad.getOrCreateStateSet().addUniform(WebGL.gPaintPositionUniform);
     quad.getOrCreateStateSet().addUniform(WebGL.gTimeUniform);
     WebGL.DrawBufferCam.addChild(quad);
-    
 }
 
 
@@ -47,20 +46,15 @@ function GetDrawingShader() {
 	    "precision highp float;",
 	    "#endif",
 	    "attribute vec3 Vertex;",
-
 	    "attribute vec2 TexCoord0;",
-	    
 	    "varying vec2 oTC0;",
-	    	    
 	    "vec4 ftransform() {",
-	    "return vec4(Vertex, 1.0);",
+	    	"return vec4(Vertex, 1.0);",
 	    "}",
 	    "",
 	    "void main() {",
-	    "gl_Position = ftransform();",
-	   
-	    "oTC0 = TexCoord0;",
-	   
+			"gl_Position = ftransform();",
+			"oTC0 = TexCoord0;",
 	    "}" ].join('\n');
 
     var fragshader = [
@@ -84,7 +78,7 @@ function GetDrawingShader() {
 		  "  	dist = pow((dist + .055)/1.055 ,2.4);",
 		  "     else",
 		  "  	dist = dist/12.92;",
-		  "     incolor= normalize(incolor)*dist;   ",
+		  "     incolor= normalize(incolor)*dist;",
 		  "     return incolor;",
 		  "  }",
 		  
@@ -112,7 +106,7 @@ function GetDrawingShader() {
         	    "ret = base;",
         	    
         	    "float len = length(oTC0-PaintPos.xy)/(PaintPosition.z/(512.0*4.0));",
-        	    "if( len< 1.0)" ,
+        	    "if( len < 1.0)" ,
         	    "{" ,
         	    	"ret +=  stregnth* pow(1.0-(len),PaintOptions[0]);" ,
         	    "} ",
@@ -224,22 +218,22 @@ function GetTextureDrawingShader() {
 	    "uniform int time;",
 	    
 	    "void main() {",
-	    "vec2 PaintPos = texture2D(pickmap,PaintPosition.xy).xy;",
-	    "PaintPos.y = 1.0- PaintPos.y;",
-	    
-        	    "vec4 base = texture2D(texture,oTC0);",
-        	    "vec4 ret = base;",
-        	    "float len = length(oTC0-PaintPos.xy)/(PaintPosition.z/(512.0*4.0));",
-        	    "if( len< 1.0)" ,
-        	    "{" ,
-        	    	"ret =  mix(base,TexturePaintChoice,clamp(0.0,1.0,PaintPosition[3] * 50.0 * pow(1.0-(len),PaintOptions[0])));" ,
-        	    "} ",
-        	    "if(len > 1.0)" ,
-        	    "{" ,
-        	    	"discard;" ,
-        	    "} ",
-        	    
-        	    "gl_FragColor = ret;",
+			"vec2 PaintPos = texture2D(pickmap,PaintPosition.xy).xy;",
+			"PaintPos.y = 1.0- PaintPos.y;",
+			
+			"vec4 base = texture2D(texture,oTC0);",
+			"vec4 ret = base;",
+			"float len = length(oTC0-PaintPos.xy)/(PaintPosition.z/(512.0*4.0));",
+			"if( len< 1.0)" ,
+			"{" ,
+				"ret =  mix(base,TexturePaintChoice,clamp(0.0,1.0,PaintPosition[3] * 50.0 * pow(1.0-(len),PaintOptions[0])));" ,
+			"} ",
+			"if(len > 1.0)" ,
+			"{" ,
+				"discard;" ,
+			"} ",
+			
+			"gl_FragColor = ret;",
 	    "}" ].join('\n');
 
     var Frag = osg.Shader.create(gl.FRAGMENT_SHADER, fragshader);
