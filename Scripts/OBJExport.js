@@ -2,7 +2,6 @@ var TerrainBufferArray = new ArrayBuffer(4*512*512);
 var TerrainBufferView = new Uint8Array(TerrainBufferArray,0);
 function GetData(){
     
-    
     WebGL.gviewer.view.addChild(WebGL.DrawBufferCam);
     WebGL.gviewer.frame();
     gl.flush();
@@ -12,7 +11,6 @@ function GetData(){
     gl.readPixels(0,0,512,512,gl.RGBA,gl.UNSIGNED_BYTE,TerrainBufferView);
     WebGL.gviewer.view.removeChild(WebGL.DrawBufferCam);
 
-    
     return v1;
 }
 function sampleData(x,y)
@@ -25,8 +23,6 @@ function sampleData(x,y)
 }
 function unpackheight(sample)
 {
-   
-    
     var bitsh = [1.0/(256.0*256.0*256.0), 1.0/(256.0*256.0), 1.0/256.0, 1.0];
     var h = sample[0] * bitsh[0] + sample[1] * bitsh[1] + sample[2] * bitsh[2] + sample[3] * bitsh[3];
     return h/2.5;

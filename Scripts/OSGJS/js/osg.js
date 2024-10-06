@@ -2731,14 +2731,14 @@ osg.BoundingBox.prototype = {
     },
 
     center: function() {
-	return osg.Vec3.mult(osg.Vec3.add(this._min,this._max),0.5);
+	    return osg.Vec3.mult(osg.Vec3.add(this._min,this._max),0.5);
     },
     radius: function() {
-	return Math.sqrt(this.radius2());
+	    return Math.sqrt(this.radius2());
     },
 
     radius2: function() {
-	return 0.25*(osg.Vec3.length2(osg.Vec3.sub(this._max,this._min)));
+	    return 0.25*(osg.Vec3.length2(osg.Vec3.sub(this._max,this._min)));
     },
     corner: function(pos) {
         ret = [0.0,0.0,0.0];
@@ -2968,10 +2968,10 @@ osg.Node.prototype = {
         return false;
     },
     addChild: function (child) {
-	var c =  this.children.push(child);
+        var c =  this.children.push(child);
         child.addParent(this);
-	this.dirtyBound();
-	return c;
+        this.dirtyBound();
+        return c;
     },
     getChildren: function() { return this.children; },
     addParent: function( parent) {
@@ -3023,29 +3023,29 @@ osg.Node.prototype = {
         return this.boundingSphere;
     },
 
-    computeBound: function (bsphere) {
+    addUniformcomputeBound: function (bsphere) {
         var bb = new osg.BoundingBox();
         bb.init();
         bsphere.init();
-	for (var i = 0, l = this.children.length; i < l; i++) {
-	    var child = this.children[i];
+        for (var i = 0, l = this.children.length; i < l; i++) {
+            var child = this.children[i];
             if (child.referenceFrame === undefined || child.referenceFrame === osg.Transform.RELATIVE_RF) {
-	        bb.expandBySphere(child.getBound());
+                bb.expandBySphere(child.getBound());
             }
-	}
+        }
         if (!bb.valid()) {
             return bsphere;
         }
         bsphere._center = bb.center();
         bsphere._radius = 0.0;
-	for (var i = 0, l = this.children.length; i < l; i++) {
-	    var child = this.children[i];
+        for (var i = 0, l = this.children.length; i < l; i++) {
+            var child = this.children[i];
             if (child.referenceFrame === undefined || child.referenceFrame === osg.Transform.RELATIVE_RF) {
-	        bsphere.expandRadiusBySphere(child.getBound());
+                bsphere.expandRadiusBySphere(child.getBound());
             }
-	}
-            
-	return bsphere;
+        }
+                
+        return bsphere;
     }
 
 };

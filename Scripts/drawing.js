@@ -233,6 +233,7 @@ function GetTextureDrawingShader() {
 			"} ",
 			
 			"gl_FragColor = ret;",
+
 	    "}" ].join('\n');
 
     var Frag = osg.Shader.create(gl.FRAGMENT_SHADER, fragshader);

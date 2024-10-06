@@ -89,10 +89,7 @@ function SetupTerrainHeight()
 	    newstateset.addUniform(WebGL.gPaintPositionUniform);
 	    newstateset.addUniform(WebGL.gPaintOptionsUniform);
 	    newstateset.addUniform(WebGL.gTimeUniform);
-	      
-
-	 //   landscapeTexture = osg.Texture.createFromCanvas(landscapecanvas);
-	 //   landscapeTexture.compile();
+	    
 	    
 	    WebGL.DrawBufferCam.registerStateSetTexture(newstateset,2);
 	    

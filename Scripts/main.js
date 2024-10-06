@@ -1721,8 +1721,6 @@ function SetupRendering() {
     BuildDrawBufferCamera();
     BuildTextureBufferCamera();
     
-
-    
     BuildAOBufferCamera();
     BuildSSBufferCamera();
     
