@@ -52,7 +52,6 @@ WebGL.ShadowMapResolution = '1024.0';
 WebGL.ShadowDebugNode;
 WebGL.inFullScreen = false;
 WebGL.InUpload = false;
-WebGL.InWireframeUniform = null;
 WebGL.gButtonsInitialized = false;
 WebGL.PickBufferCam;
 WebGL.PickBufferTexture;
@@ -65,10 +64,6 @@ WebGL.gUseTempTextureHandler = false;
 WebGL.MouseX = 0;
 WebGL.MouseY = 0;
 
-wisdown = false;
-aisdown = false;
-sisdown = false;
-disdown = false;
 
 
  
@@ -88,7 +83,6 @@ function WebGlSetUnitScale(scale)
         BuildModelTransform();
         UpdateBounds();
         RebuildGrid();
-      //  ForceUpdateShadowMap();
     
         WebGL.gCameraTarget = WebGL.gSceneBounds.GetCenter();
         var l = osg.Vec3.length(WebGL.gCameraOffset);
@@ -125,30 +119,6 @@ function BoundingBox(array) {
     };
 }
 
-function getWindowSize() {
-    var myWidth = 0;
-    var myHeight = 0;
-
-    if (typeof (window.innerWidth) == 'number') {
-	// Non-IE
-	myWidth = window.innerWidth;
-	myHeight = window.innerHeight;
-    } else if (document.documentElement
-	    && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
-	// IE 6+ in 'standards compliant mode'
-	myWidth = document.documentElement.clientWidth;
-	myHeight = document.documentElement.clientHeight;
-    } else if (document.body
-	    && (document.body.clientWidth || document.body.clientHeight)) {
-	// IE 4 compatible
-	myWidth = document.body.clientWidth;
-	myHeight = document.body.clientHeight;
-    }
-    return {
-	'w' : myWidth,
-	'h' : myHeight
-    };
-}
 
 function WebGLScreenshot() {
 
@@ -534,9 +504,6 @@ function UpdateCamera() {
     }
 }
 
-
-
-
 var brushsize = 10;
 var brushstrength = .01;
 var brushmode = 0.0;
@@ -565,65 +532,6 @@ function BindInputs() {
 			return false;
 		}
     });
-    document.onkeyup = function(event){
-		//w key
-		if (event.keyCode == 87)
-		{		
-			wisdown = false;
-			return false;
-		}
-		//s key
-		else if (  event.keyCode == 83)
-		{		
-		   
-			sisdown = false;
-			return false;
-		}
-		//a key
-		else if ( event.keyCode == 65)
-		{		
-			
-		   aisdown = false;
-			return false;
-		}
-		//d key
-		else if (  event.keyCode == 68)
-		{		
-			
-		   disdown = false;
-			return false;
-		}
-	
-	}
-    document.onkeydown = function(event){
-		//w key
-		if (  event.keyCode == 87)
-		{		
-			wisdown = true;
-			return false;
-		}
-		//s key
-		else if (  event.keyCode == 83)
-		{		
-			sisdown = true;
-			return false;
-		}
-		//a key
-		else if ( event.keyCode == 65)
-		{		
-			aisdown = true;
-			return false;
-		}
-		//d key
-		else if (  event.keyCode == 68)
-		{		
-			disdown = true;
-			return false;
-		}
-	
-	 return true;
-	
-    };
     if ($('#canvas_Wrapper').mousewheel) {
         $('#canvas_Wrapper').mousewheel(function (event, delta) {
             event.preventDefault();
@@ -827,36 +735,16 @@ function ToggleAnimation() {
 }
 function initWebGL(location, showscreenshot, upaxis, scale  ) {
 
-    
     WebGL.tempUpVec = upaxis;
     WebGL.tempScale = scale;
    
-    if(showscreenshot == true)
-	WebGL.InUpload = true;
+    if(showscreenshot)WebGL.InUpload = true;
     
-    if(showscreenshot == 'true')
-	WebGL.InUpload = true;
-    
-
-    var size = getWindowSize();
-
     var canvas = document.getElementById("WebGLCanvas");
-
-    // canvas.clientWidth = size.w;
-    // canvas.clientHeight = size.h;
-
-    var qpos = location.indexOf('?');
-
-    //WebGL.gPID = location.substr(qpos + 1);
-    //qpos = WebGL.gPID.indexOf('.zip');
-    //WebGL.gPID = WebGL.gPID.substr(0, qpos + 4);
-    //WebGL.gPID = WebGL.gPID.replace("pid=", "ContentObjectID=");
-
     var viewer;
    
 	LoadQueryParams();
 	viewer = new osgViewer.Viewer(canvas);
-	//viewer.initStats({statsMaxMS:50,statsStepMS:10});
 	var success = viewer.init();
 	if(success == false)
 	{
@@ -864,7 +752,6 @@ function initWebGL(location, showscreenshot, upaxis, scale  ) {
 	    return false;
 	}
 	
-	// viewer.setupManipulator();
 	WebGL.gviewer = viewer;
 	createScene(viewer, location);
    
@@ -877,18 +764,8 @@ function initWebGL(location, showscreenshot, upaxis, scale  ) {
     
     return true;
 }
-function ThumbExists(name)
-{
-    for(i =0 ; i < WebGL.ThumbNails.length; i++)
-	{
-	if( WebGL.ThumbNails[i].name == name)
-	    return true;
-	}
-    return false;
-}
-function Texture_Load_Callback(texturename) {
 
-    var texturehandler;
+function Texture_Load_Callback(texturename) {
     var textureURL = "./Assets/Textures/" + texturename;
     var t = osg.Texture.create(textureURL);
 	t.file = texturename;
@@ -896,9 +773,8 @@ function Texture_Load_Callback(texturename) {
 };
 function AnimateTop() {
     WebGL.gAnimating = true;
-    // alert(WebGLGetUpVector() === "Z");
     if (WebGLGetUpVector() === "Y")
-	WebGL.gCameraGoal = [ 0, 0, osg.Vec3.length(WebGL.gCameraOffset) ];
+		WebGL.gCameraGoal = [ 0, 0, osg.Vec3.length(WebGL.gCameraOffset) ];
     else
         WebGL.gCameraGoal = [0, osg.Vec3.length(WebGL.gCameraOffset), 0];
 
@@ -1496,22 +1372,7 @@ function BuildShadowCamera() {
 
 var buff = new ArrayBuffer(4);
 var v1 = new Uint8Array(buff,0);
-function DoPick(){
-   // WebGL.gviewer.view.addChild(WebGL.PickBufferCam);
-   // WebGL.gviewer.frame();
-    gl.bindFramebuffer(gl.FRAMEBUFFER,WebGL.PickBufferCam.frameBufferObject.fbo);
-    gl.flush();
-    var x = (WebGL.MouseX / WebGL.gviewer.canvas.width) * WebGL.PickBufferResolution;
-    var y = (WebGL.MouseY / WebGL.gviewer.canvas.height) * WebGL.PickBufferResolution;
-    gl.readPixels(x,y,1,1,gl.RGBA,gl.UNSIGNED_BYTE,v1);
-    return v1;
-}
 
-function ClearPick()
-{
-    var checker = new CheckPickColorsVisitor([-1,-1,-1]);
-    WebGL.gSceneRoot.accept(checker);    
-}
 
 function BuildPickBufferCamera() {
 
@@ -1831,14 +1692,7 @@ function SetupRendering() {
     var CountPolys = new CountTrianglesVisitor();
     WebGL.gSceneRoot.accept(CountPolys);
     
-    WebGL.InWireframeUniform = osg.Uniform.createInt1(0, "InWireframe");
-    WebGL.gModelRoot.getOrCreateStateSet().addUniform(WebGL.InWireframeUniform);
-    
-    
-    WebGL.ShadowDebugNode.getOrCreateStateSet().addUniform(osg.Uniform.createInt1(0, "InWireframe"));
-    WebGL.gCamera.getOrCreateStateSet().addUniform(osg.Uniform.createInt1(0, "InWireframe"));
-    WebGL.gCamera.getOrCreateStateSet().addUniform(osg.Uniform.createInt1([0] , "IsPicked"));
-    WebGL.gCamera.getOrCreateStateSet().setAttribute(new osg.LineWidth(2));
+
     
     BuildPickBufferCamera();
     WebGL.PickBufferCam.addChild(WebGL.gModelRoot);
@@ -2283,18 +2137,17 @@ CheckPickColorsVisitor.prototype = osg.objectInehrit(osg.NodeVisitor.prototype, 
 	    if (node.getPrimitives) {
 			if(node.pickcolor && node.pickedUniform)
 			    {
-			    	
 			    	if(osg.Vec3.length(osg.Vec3.sub(node.pickcolor, this.color)) < .01)
-			    	    {
-			    	    	node.pickedUniform.set([1]);
-			    	    	node.pickcolorUniform.set([1,1,1]);
-			    	    	//document.title = node.name;
-			    	    }
+					{
+						node.pickedUniform.set([1]);
+						node.pickcolorUniform.set([1,1,1]);
+						//document.title = node.name;
+					}
 			    	else
-			    	    {
-			    		node.pickedUniform.set([0]);
-			    		node.pickcolorUniform.set(node.pickcolor);
-			    	    }
+					{
+						node.pickedUniform.set([0]);
+						node.pickcolorUniform.set(node.pickcolor);
+					}
 			    }
 		}
 	    }
@@ -2302,39 +2155,7 @@ CheckPickColorsVisitor.prototype = osg.objectInehrit(osg.NodeVisitor.prototype, 
 	}
     }
 );
-function ApplyWireframe() {
-    WebGL.gModelRoot.accept(new WireframeVisitor());
-    $(WebGL.gWireframeButton).click(UndoWireframe);
-    WebGL.InWireframeUniform.set([1]);
-    WebGL.gCamera.getOrCreateStateSet().setAttribute(
-	    new osg.CullFace('BACK'));
-    //ForceUpdateShadowMap();
-}
-function UndoWireframe() {
-    WebGL.gModelRoot.accept(new UnWireframeVisitor());
-    $(WebGL.gWireframeButton).click(ApplyWireframe);
-    WebGL.InWireframeUniform.set([0]);
-    WebGL.gCamera.getOrCreateStateSet().setAttribute(
-	    new osg.CullFace("BACK"));
-    //ForceUpdateShadowMap();
-}
 
-var UnWireframeVisitor = function() {
-    osg.NodeVisitor.call(this);
-};
-UnWireframeVisitor.prototype = osg.objectInehrit(osg.NodeVisitor.prototype, {
-    apply : function(node) {
-	if (node.traverse) {
-	    if (node.getPrimitives) {
-		var PrimitiveList = node.getPrimitives();
-		for ( var i = 0; i < PrimitiveList.length; i++) {
-		    PrimitiveList[i] = node.OldPrims[i];
-		}
-	    }
-	    this.traverse(node);
-	}
-    }
-});
 
 var PrepareForExportVisitor = function() {
     osg.NodeVisitor.call(this);

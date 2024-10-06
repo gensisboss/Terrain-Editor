@@ -688,16 +688,16 @@ $(document).ready(function(){
 	    document.getElementById("WebGLCanvas").width = $(window).width();
 		document.getElementById("WebGLCanvas").height = $(window).height();
 		WebGL.gCamera.setViewport(new osg.Viewport(0, 0, $(window).width(), $(window).height()));
-	  });
+	});
 	
 	initWebGL("/Users/gongganghao/Downloads/Terrain-Editor/Assets/Models/matv01_veh.json", false, "Y", 1.0  );
 
 	window.setTimeout(function(){
 		Mousedown(-1,-1, 1)
-	window.setTimeout(function(){
-		Mouseup(-1,-1, 1)
-	},300);
-},300);
+		window.setTimeout(function(){
+			Mouseup(-1,-1, 1)
+		},30);	
+	},30);
 	
 });
 </script>
